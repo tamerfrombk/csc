@@ -1,0 +1,8 @@
+# Ignore the build directory
+build/
+
+# VS Code
+.vscode/
+
+# Ignore the auto generated tests
+test/tests.c
