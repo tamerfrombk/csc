@@ -14,6 +14,8 @@ typedef enum CSCError {
     E_ERR_N // This is __always__ the last error. Add errors before here.
 } CSCError;
 
+void csc_swap(void** a, void** b);
+
 typedef bool (*csc_compare)(const void*, const void*);
 
 #define CSC_DECLARE_BUILTIN_CMP(type) bool csc_cmp_##type(const void* a, const void* b)
