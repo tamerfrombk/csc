@@ -14,23 +14,7 @@ else()
     message(FATAL_ERROR "${CMAKE_C_COMPILER_ID} is not supported!")
 endif()
 
-# Set up the output directory for builds
-set(CSC_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build")
-
-# Set the generic runtime output directory for single generators like "make"
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CSC_OUTPUT_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CSC_OUTPUT_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CSC_OUTPUT_DIR})
-
-# Set the generic runtime output directory for multi generators like "msvc"
-foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-    string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CSC_OUTPUT_DIR}/${OUTPUTCONFIG})
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CSC_OUTPUT_DIR}/${OUTPUTCONFIG})
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CSC_OUTPUT_DIR}/${OUTPUTCONFIG})
-endforeach(OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES)
-
-message("Current output directory ${CSC_OUTPUT_DIR}")
+message("Current output directory ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 # Set the build type (this only affects single output generators)
 if(CMAKE_GENERATOR MATCHES "Unix Makefiles")
@@ -60,7 +44,6 @@ include_directories(src)
 # Build a library out of the sources
 set(CSC_SOURCES "src/csc.h" "src/cvector.h" "src/cvector.c")
 add_library(csc STATIC ${CSC_SOURCES})
-set_target_properties(csc PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CSC_OUTPUT_DIR}")
 
 # Generate the unit tests
 if (WIN32)
@@ -77,4 +60,3 @@ endif()
 add_executable(csc-tests "test/tests.c" "test/CuTest.c" "test/CuTest.h" "test/cvector_tests.c")
 target_link_libraries(csc-tests csc)
 add_dependencies(csc-tests csc-build-tests)
-set_target_properties(csc-tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CSC_OUTPUT_DIR}")
