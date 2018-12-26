@@ -18,4 +18,5 @@ size_t csc_cvector_capacity(const cvector* v);
 
 void csc_cvector_foreach(cvector* v, cvector_foreach fn, void* context);
 
-void* csc_cvector_at(cvector* v, size_t idx);
+void* csc_cvector_at(const cvector* v, size_t idx);
+
