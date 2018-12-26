@@ -182,3 +182,26 @@ void TestVectorRmAtNotEmptyAndDoesNotExist(CuTest *c)
 
     csc_cvector_destroy(v);
 }
+
+void TestVectorEmptyOnEmpty(CuTest* c)
+{
+    cvector* v = csc_cvector_create();
+
+    CuAssertTrue(c, csc_cvector_empty(v));
+
+    csc_cvector_destroy(v);
+}
+
+void TestVectorEmptyOnNonEmpty(CuTest* c)
+{
+    cvector* v = csc_cvector_create();
+
+    int* x = malloc(sizeof(*x));
+    *x = 1;
+
+    csc_cvector_add(v, x);
+
+    CuAssertTrue(c, !csc_cvector_empty(v));
+
+    csc_cvector_destroy(v);
+}

@@ -118,3 +118,9 @@ void* csc_cvector_find(const cvector* v, const void* elem, csc_compare cmp)
     }
     return NULL;
 }
+
+bool csc_cvector_empty(const cvector* v)
+{
+    assert(v != NULL);
+    return v->size == 0;
+}

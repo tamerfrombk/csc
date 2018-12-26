@@ -26,3 +26,5 @@ void csc_cvector_foreach(cvector* v, cvector_foreach fn, void* context);
 
 void* csc_cvector_at(const cvector* v, size_t idx);
 
+bool csc_cvector_empty(const cvector* v);
+
