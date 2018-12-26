@@ -3,8 +3,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdlib.h>
 
-typedef enum CGCError {
+#define CSC_UNUSED(x) (void)x
+
+typedef enum CSCError {
     E_NOERR = 0,
     E_ERR_N // This is __always__ the last error. Add errors before here.
-} CGCError;
+} CSCError;
