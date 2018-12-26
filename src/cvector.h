@@ -12,6 +12,12 @@ void csc_cvector_destroy(cvector* v);
 
 CSCError csc_cvector_add(cvector* v, void* elem);
 
+void csc_cvector_rm(cvector* v, const void* elem, csc_compare cmp);
+
+CSCError csc_cvector_rm_at(cvector* v, size_t idx);
+
+void* csc_cvector_find(const cvector* v, const void* elem, csc_compare comp);
+
 size_t csc_cvector_size(const cvector* v);
 
 size_t csc_cvector_capacity(const cvector* v);

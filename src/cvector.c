@@ -70,5 +70,51 @@ CSCError csc_cvector_add(cvector* v, void* elem)
 void* csc_cvector_at(const cvector* v, size_t idx)
 {
     assert(v != NULL);
-    return v->data[idx];
+    if (idx < v->size) {
+        return v->data[idx];
+    }
+    return NULL;
+}
+
+void csc_cvector_rm(cvector* v, const void* elem, csc_compare cmp)
+{
+    assert(v != NULL);
+    void* ret = csc_cvector_find(v, elem, cmp);
+    if (ret == NULL) {
+        return; // if the vector is empty or the element isn't there.
+    }
+
+    if (v->size > 1) {
+        csc_swap(&ret, &(v->data[v->size - 1]));
+    }
+    --v->size;
+}
+
+CSCError csc_cvector_rm_at(cvector* v, size_t idx)
+{
+    assert(v != NULL);
+
+    void* ret = csc_cvector_at(v, idx);
+    if (ret == NULL) {
+        return E_OUTOFRANGE;
+    }
+
+    if (v->size > 1) {
+        csc_swap(&ret, &(v->data[v->size - 1]));
+    }
+    --v->size;
+    
+    return E_NOERR;
+}
+
+void* csc_cvector_find(const cvector* v, const void* elem, csc_compare cmp)
+{
+    assert(v != NULL);
+
+    for (size_t i = 0; i < v->size; ++i) {
+        if (cmp(v->data[i], elem)) {
+            return v->data[i];
+        }
+    }
+    return NULL;
 }
