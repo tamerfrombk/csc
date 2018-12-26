@@ -66,3 +66,9 @@ CSCError csc_cvector_add(cvector* v, void* elem)
 
     return E_NOERR;
 }
+
+void* csc_cvector_at(cvector* v, size_t idx)
+{
+    assert(v != NULL);
+    return v->data[idx];
+}

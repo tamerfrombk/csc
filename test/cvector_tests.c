@@ -47,3 +47,19 @@ void TestVectorForEach(CuTest *c)
 
     csc_cvector_destroy(v);
 }
+
+void TestVectorAt(CuTest *c)
+{
+    cvector* v = csc_cvector_create();
+
+    int *i = malloc(sizeof(*i));
+    *i = 1;
+
+    csc_cvector_add(v, i);
+    
+    int* ret = csc_cvector_at(v, 0);
+
+    CuAssertTrue(c, *ret == 1);
+
+    csc_cvector_destroy(v);
+}
