@@ -23,20 +23,21 @@ size_t csc_cvector_capacity(const cvector* v)
     return v->capacity;
 }
 
-static void _csc_free_elem(void* e, void* context) 
+static void _csc_free_elem(void* elem, void* context)
 {
     CSC_UNUSED(context);
-    free(e);
+    assert(elem != NULL);
+    free(elem);
 }
 
 void csc_cvector_destroy(cvector* v)
 {
     assert(v != NULL);
-    csc_cvector_foreach(v, _csc_free_elem);
+    csc_cvector_foreach(v, _csc_free_elem, NULL);
     free(v);
 }
 
-void csc_cvector_foreach(cvector* v, cvector_foreach fn)
+void csc_cvector_foreach(cvector* v, cvector_foreach fn, void* context)
 {
     assert(v != NULL);
     if (v->data == NULL) {
@@ -44,6 +45,24 @@ void csc_cvector_foreach(cvector* v, cvector_foreach fn)
     }
 
     for (size_t i = 0; i < v->size; ++i) {
-        fn(v->data[i], NULL);
+        fn(v->data[i], context);
     }
+}
+
+CSCError csc_cvector_add(cvector* v, void* elem)
+{
+    assert(v != NULL);
+    if (v->size >= v->capacity) {
+        const size_t new_capacity = v->capacity == 0 ? 10 : v->capacity * 1.5;
+        void** data = realloc(v->data, new_capacity * sizeof(*(v->data)));
+        if (data == NULL) {
+            return E_OUTOFMEM;
+        }
+        v->data = data;
+        v->capacity = new_capacity;
+    }
+    v->data[v->size] = elem;
+    ++v->size;
+
+    return E_NOERR;
 }
