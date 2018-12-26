@@ -42,7 +42,7 @@ message("Compiling with: ${CMAKE_C_COMPILER} ${CMAKE_C_FLAGS}")
 include_directories(src)
 
 # Build a library out of the sources
-set(CSC_SOURCES "src/csc.h" "src/cvector.h" "src/cvector.c")
+set(CSC_SOURCES "src/csc.h" "src/csc.c" "src/cvector.h" "src/cvector.c")
 add_library(csc STATIC ${CSC_SOURCES})
 
 # Generate the unit tests
