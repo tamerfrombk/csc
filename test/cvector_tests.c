@@ -64,6 +64,22 @@ void TestVectorAt(CuTest *c)
     csc_cvector_destroy(v);
 }
 
+void TestVectorAtOutOfRange(CuTest *c)
+{
+    cvector* v = csc_cvector_create();
+
+    int *i = malloc(sizeof(*i));
+    *i = 1;
+
+    csc_cvector_add(v, i);
+    
+    int* ret = csc_cvector_at(v, 1);
+
+    CuAssertPtrEquals(c, NULL, ret);
+
+    csc_cvector_destroy(v);
+}
+
 void TestVectorFindElementExists(CuTest *c)
 {
     cvector* v = csc_cvector_create();
