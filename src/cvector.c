@@ -54,12 +54,10 @@ CSCError csc_cvector_add(cvector* v, void* elem)
     assert(v != NULL);
     if (v->size >= v->capacity) {
         const size_t new_capacity = v->capacity == 0 ? 10 : v->capacity * 1.5;
-        void** data = realloc(v->data, new_capacity * sizeof(*(v->data)));
-        if (data == NULL) {
-            return E_OUTOFMEM;
+        CSCError e = csc_cvector_reserve(v, new_capacity);
+        if (e != E_NOERR) {
+            return e;
         }
-        v->data = data;
-        v->capacity = new_capacity;
     }
     v->data[v->size] = elem;
     ++v->size;
@@ -123,4 +121,28 @@ bool csc_cvector_empty(const cvector* v)
 {
     assert(v != NULL);
     return v->size == 0;
+}
+
+CSCError csc_cvector_reserve(cvector* v, size_t num_elems)
+{
+    assert(v != NULL);
+    if (num_elems < v->size) {
+        return E_INVALIDOPERATION; // no information loss allowed
+    }
+
+    void** data = realloc(v->data, num_elems * sizeof(*(v->data)));
+    if (data == NULL) {
+        return E_OUTOFMEM;
+    }
+
+    v->data = data;
+    v->capacity = num_elems;
+
+    return E_NOERR;
+}
+
+CSCError csc_cvector_shrink_to_fit(cvector* v)
+{
+    assert(v != NULL);
+    return csc_cvector_reserve(v, v->size);
 }

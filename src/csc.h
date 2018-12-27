@@ -11,6 +11,7 @@ typedef enum CSCError {
     E_NOERR = 0,
     E_OUTOFMEM,
     E_OUTOFRANGE,
+    E_INVALIDOPERATION,
     E_ERR_N // This is __always__ the last error. Add errors before here.
 } CSCError;
 

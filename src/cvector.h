@@ -28,3 +28,7 @@ void* csc_cvector_at(const cvector* v, size_t idx);
 
 bool csc_cvector_empty(const cvector* v);
 
+CSCError csc_cvector_reserve(cvector* v, size_t num_elems);
+
+CSCError csc_cvector_shrink_to_fit(cvector* v);
+
