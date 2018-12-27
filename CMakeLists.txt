@@ -51,7 +51,9 @@ if (WIN32)
 elseif (APPLE)
     message(FATAL_ERROR "Test builds not yet supported on MacOS! You can still use the library sources though!")
 elseif (UNIX AND NOT APPLE)
-    add_custom_target(csc-build-tests COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test/make-tests.sh WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test)
+    add_custom_target(csc-build-tests 
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test/make-tests.sh 
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test)
 else ()
     message(FATAL_ERROR "Unsupported operating system!")
 endif()
@@ -60,3 +62,26 @@ endif()
 add_executable(csc-tests "test/tests.c" "test/CuTest.c" "test/CuTest.h" "test/cvector_tests.c")
 target_link_libraries(csc-tests csc)
 add_dependencies(csc-tests csc-build-tests)
+
+# Generate documentation if configured to.
+if (CSC_GENERATE_DOCS)
+    message("Generating doxygen documentation...")
+    find_package(Doxygen REQUIRED)
+    if (Doxygen_FOUND)
+        set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C "YES")
+        set(DOXYGEN_PROJECT_BRIEF "C Standard Containers")
+        set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doc")
+        doxygen_add_docs(csc-docs "${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+        if (APPLE OR UNIX)
+            add_custom_target(csc-build-docs
+                ALL 
+                COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/generate-docs.sh ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.csc-docs 
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                COMMENT "Generating doxygen documentation to ${DOXYGEN_OUTPUT_DIRECTORY}."
+                VERBATIM)
+        else ()
+            message(FATAL_ERROR "Document generation not currently supported for this platform.")
+        endif() # end OS check
+    endif() # end doxygen found
+endif() # end generate docs
