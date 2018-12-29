@@ -37,9 +37,14 @@
  * @code
  * CSCError e = csc_function(args...);
  * if (e != E_NOERR) {
- *     // handle the error condition.
+ *      // handle the error by printing a simple diagnostic message.
+ *      char buf[CSC_MAX_ERROR_MSG_LEN] = {0};
+ *      csc_error_str(e, buf, CSC_MAX_ERROR_MSG_LEN);
+ *      puts(buf);
  * }
  * @endcode
+ * 
+ * @see csc_error_str
  */
 typedef enum CSCError {
     E_NOERR = 0, /**< This indicates no errors occurred in the operation. */
