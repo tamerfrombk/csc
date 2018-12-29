@@ -1,9 +1,18 @@
+/**
+ * @file cvector.c
+ * @author Tamer Aly
+ * @date 27 Dec 2018
+ * @brief contains the implementation of the cvector structure.
+ *
+ */
+
 #include "cvector.h"
 #include <assert.h>
 
 struct cvector {
-    void** data;
-    size_t size, capacity;
+    void** data; /**< The internal data store of the vector. */
+    size_t size; /**< The number of elements currently in the vector. */
+    size_t capacity; /**< The number of elements the vector is capable of storing before needing to resize. */
 };
 
 cvector* csc_cvector_create()
@@ -110,7 +119,7 @@ void* csc_cvector_find(const cvector* v, const void* elem, csc_compare cmp)
     assert(v != NULL);
 
     for (size_t i = 0; i < v->size; ++i) {
-        if (cmp(v->data[i], elem)) {
+        if (cmp(v->data[i], elem) == 0) {
             return v->data[i];
         }
     }
