@@ -18,23 +18,34 @@
 # These values from the doxygen config are used to determine where the output PDF will be installed.
 #
 
+#
+# Perform some sanity checks.
+#
+
 if [ ! "command -v doxygen" > /dev/null 2>&1 ]; then
     echo "Doxygen command is not on your PATH! Please ensure doxygen is installed in the PATH."
     exit 1
 fi
 
-if [ "$#" -ne "1" && ! -f "$1" ]; then
+if [ "$#" -ne "1" ]; then
     echo "Need arguments: <doxygen config file>"
+    exit 1
+fi
+
+if [ ! -f "$1" ]; then
+    echo "'$1' is not a file!"
     exit 1
 fi
 
 DOXYGEN_CONFIG_FILE="${1}"
 
+#
 # Extract the required doxygen configs
+#
 
 LATEX_DIR=$(grep 'LATEX_OUTPUT' "${DOXYGEN_CONFIG_FILE}" | tr -d '=' | awk '{print $2}')
 if [ -z LATEX_DIR ]; then
-    echo "LATEX_DIR was not specified in doxygen config '${DOXYGEN_CONFIG_FILE}' when it is required!"
+    echo "LATEX_OUTPUT was not specified in doxygen config '${DOXYGEN_CONFIG_FILE}' when it is required!"
     exit 1
 fi
 
