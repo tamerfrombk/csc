@@ -42,7 +42,7 @@ message("Compiling with: ${CMAKE_C_COMPILER} ${CMAKE_C_FLAGS}")
 include_directories(src)
 
 # Build a library out of the sources
-set(CSC_SOURCES "src/csc.h" "src/csc.c" "src/cvector.h" "src/cvector.c")
+set(CSC_SOURCES "src/csc.h" "src/csc.c" "src/cvector.h" "src/cvector.c" "src/cbitset.h" "src/cbitset.c")
 add_library(csc STATIC ${CSC_SOURCES})
 
 # Generate the unit tests
@@ -59,7 +59,7 @@ else ()
 endif()
 
 # Build the tests for ctest
-add_executable(csc-tests "test/tests.c" "test/CuTest.c" "test/CuTest.h" "test/cvector_tests.c")
+add_executable(csc-tests "test/tests.c" "test/CuTest.c" "test/CuTest.h" "test/cvector_tests.c" "test/cbitset_tests.c")
 target_link_libraries(csc-tests csc)
 add_dependencies(csc-tests csc-build-tests)
 
