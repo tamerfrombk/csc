@@ -67,24 +67,25 @@ add_dependencies(csc-tests csc-build-tests)
 if (CSC_GENERATE_DOCS)
     message("Generating doxygen documentation...")
     find_package(Doxygen REQUIRED)
-    if (Doxygen_FOUND)
-        set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C "YES")
-        set(DOXYGEN_PROJECT_NUMBER "1.0.0")
-        set(DOXYGEN_PROJECT_BRIEF "C Standard Containers")
-        set(DOXYGEN_GENERATE_LATEX "YES")
-        set(DOXYGEN_GENERATE_HTML "NO")
-        set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doc")
-        doxygen_add_docs(csc-docs "${CMAKE_CURRENT_SOURCE_DIR}/src")
+    
+    # Doxygen has been found. Set necessary doxygen config parameters.
+    set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C "YES")
+    set(DOXYGEN_PROJECT_NUMBER "1.0.0")
+    set(DOXYGEN_PROJECT_BRIEF "C Standard Containers")
+    set(DOXYGEN_GENERATE_LATEX "YES")
+    set(DOXYGEN_GENERATE_HTML "NO")
+    set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doc")
+    doxygen_add_docs(csc-docs "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-        if (APPLE OR UNIX)
-            add_custom_target(csc-build-docs
-                ALL 
-                COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/generate-docs.sh ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.csc-docs
-                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                COMMENT "Generating doxygen documentation to ${DOXYGEN_OUTPUT_DIRECTORY}."
-                VERBATIM)
-        else ()
-            message(FATAL_ERROR "Document generation not currently supported for this platform.")
-        endif() # end OS check
-    endif() # end doxygen found
+    if (APPLE OR UNIX)
+        add_custom_target(csc-build-docs
+            ALL 
+            COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/generate-docs.sh ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.csc-docs
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            COMMENT "Generating doxygen documentation to ${DOXYGEN_OUTPUT_DIRECTORY}."
+            VERBATIM)
+    else ()
+        message(FATAL_ERROR "Document generation not currently supported for this platform.")
+    endif() # end OS check
+
 endif() # end generate docs
