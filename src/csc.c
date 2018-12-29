@@ -8,6 +8,7 @@
  */
 
 #include "csc.h"
+#include <string.h>
 
 /**
  * @brief implements a builtin type comparison function
@@ -35,4 +36,24 @@ void csc_swap(void** a, void** b)
     void* c = *a;
     *a = *b;
     *b = c;
+}
+
+void csc_error_str(CSCError e, char* buf, size_t len)
+{
+    switch (e) {
+    case E_NOERR:
+        strncpy(buf, "no error.", len);
+        break;
+    case E_INVALIDOPERATION:
+        strncpy(buf, "the last operation was invalid.", len);
+        break;
+    case E_OUTOFMEM:
+        strncpy(buf, "the last operation's memory request failed.", len);
+        break;
+    case E_OUTOFRANGE:
+        strncpy(buf, "the last operation requested an out of range element.", len);
+        break;
+    default:
+        break;
+    }
 }

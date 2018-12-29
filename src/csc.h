@@ -96,4 +96,44 @@ typedef int (*csc_compare)(const void* a, const void* b);
  */
 #define CSC_DECLARE_BUILTIN_CMP(type) int csc_cmp_##type(const void* a, const void* b)
 
+/**
+ * @brief the maximum message length a #CSCError is guaranteed to generate.
+ * 
+ * @see csc_error_str
+ * 
+ */ 
+#define CSC_MAX_ERROR_MSG_LEN 128
+
+/**
+ * @brief returns a library-defined error string depending on the error.
+ * 
+ * This is a convenience function that populates @p buf of length @p len with a 
+ * library-defined error message that depends on the value of @p e. It is recommended that @p len 
+ * is <i>at least</i> #CSC_MAX_ERROR_MSG_LEN.
+ * 
+ * This function should ideally be used after a library call returning a #CSCError for a simple diagnostic
+ * error handling mechanism. For example:
+ * 
+ * @code
+ * CSCError e = csc_some_func(args...);
+ * if (e != E_NOERR) { // uh oh. An error.
+ *      char buf[CSC_MAX_ERROR_MSG_LEN] = {0};
+ *      csc_error_str(e, buf, CSC_MAX_ERROR_MSG_LEN);
+ *      puts(buf);
+ * }
+ * @endcode
+ * 
+ * @param e the error.
+ * @param buf the buffer to fill. Must be @b non-null.
+ * @param len the length of the buffer. Recommended to be >= #CSC_MAX_ERROR_MSG_LEN.
+ * 
+ * @see CSC_MAX_ERROR_MSG_LEN
+ * 
+ */
+void csc_error_str(CSCError e, char* buf, size_t len);
+
+/*
+ * Declare all built-in type comparison functions.
+ */
+
 CSC_DECLARE_BUILTIN_CMP(int);
