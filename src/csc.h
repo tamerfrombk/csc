@@ -15,6 +15,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <limits.h>
 
 /**
  * @brief macro that silences compiler warnings about unused function parameters.
@@ -24,6 +25,23 @@
  * internally by the library.
  */
 #define CSC_UNUSED(x) (void)x
+
+// Windows sometimes doesn't define __WORDSIZE so we use the windows standard instead
+#if _WIN32 || _WIN64
+    #if _WIN64
+        #define CSC_64
+    #else
+        #define CSC_32
+    #endif
+#elif defined(__WORDSIZE)
+    #if (__WORDSIZE == 64)
+        #define CSC_64
+    #else
+        #define CSC_32
+    #endif
+#else
+    #error "Architecture or environment not currently supported."
+#endif
 
 /**
  * @brief the list of errors that can be returned by the library.
