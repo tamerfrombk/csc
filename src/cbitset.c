@@ -1,3 +1,13 @@
+/**
+ * @file cbitset.c
+ * @author Tamer Aly
+ * @date 27 Dec 2018
+ * @brief implementation of the #cbitset data structure.
+ *
+ * @see cbitset.h
+ * 
+ */
+
 #include "cbitset.h"
 #include <assert.h>
 #include <string.h>
@@ -11,9 +21,9 @@
 #define CSC_BITSIZE ((sizeof(bitset_type)) * (8))
 
 struct cbitset {
-    bitset_type* data;
-    size_t nbits;
-    size_t size;
+    bitset_type* data; /**< The internal data of the bitset. */
+    size_t nbits;      /**< The number of bits the bitset can hold. */
+    size_t size;       /**< The number of elements stored in @c cbitset#data. */
 };
 
 cbitset* csc_cbitset_create(size_t nbits)
