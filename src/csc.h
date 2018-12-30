@@ -43,6 +43,25 @@
     #error "Architecture or environment not currently supported."
 #endif
 
+// This macro block will only be defined during a Doxygen run.
+// The extra indirection is necessary because Doxygen will only generate documentation for define'd macros.
+// This method allows us to define the macros only during a Doxygen run and leave them undef'd during a normal
+// build.
+#ifdef __CSC_DOXYGEN__
+
+    /**
+     * @brief This macro is only defined if compiling on a 64 bit architecture.
+     * 
+     */
+    #define CSC_64
+
+    /**
+     * @brief This macro is only defined if compiling on a 32 bit architecture.
+     * 
+     */
+    #define CSC_32
+#endif
+
 /**
  * @brief the list of errors that can be returned by the library.
  * 
