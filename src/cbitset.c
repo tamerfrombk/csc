@@ -33,11 +33,6 @@ cbitset* csc_cbitset_create(size_t nbits)
         return NULL;
     }
 
-    cbitset* b = calloc(1, sizeof(*b));
-    if (b == NULL) {
-        return NULL;
-    }
-
     // find the number of elements needed to store the number of bits.
     int n_elems = 0;
     if ((nbits % CSC_BITSIZE) == 0) {
@@ -46,11 +41,16 @@ cbitset* csc_cbitset_create(size_t nbits)
         n_elems = (nbits / CSC_BITSIZE) + 1;
     }
 
-    b->data = calloc(n_elems, sizeof(bitset_type));
-    if (b->data == NULL) {
-        free(b);
+    // Performance Optimization: 
+    // create a single block of memory that holds the bitset first
+    // and the bitset array immediately afterwards.
+    char* data = calloc(1, (n_elems * sizeof(bitset_type)) + sizeof(cbitset));
+    if (data == NULL) {
         return NULL;
     }
+
+    cbitset* b = (cbitset*)data;
+    b->data = (bitset_type*)(data + sizeof(cbitset));
     b->nbits = nbits;
     b->size = n_elems;
 
@@ -60,7 +60,6 @@ cbitset* csc_cbitset_create(size_t nbits)
 void csc_cbitset_destroy(cbitset* b)
 {
     assert(b != NULL);
-    free(b->data);
     free(b);
 }
 
@@ -132,11 +131,11 @@ bool csc_cbitset_at(const cbitset* b, size_t bit, CSCError* e)
 void csc_cbitset_set_all(cbitset* b)
 {
     assert(b != NULL);
-    memset(b->data, ~0, b->size);
+    memset(b->data, ~0, b->size * sizeof(*(b->data)));
 }
 
 void csc_cbitset_clear_all(cbitset* b)
 {
     assert(b != NULL);
-    memset(b->data, 0, b->size);
+    memset(b->data, 0, b->size * sizeof(*(b->data)));
 }
