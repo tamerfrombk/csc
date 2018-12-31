@@ -107,8 +107,8 @@ void csc_swap(void** a, void** b);
  * This is a comparison function callback for comparing two elements that is used for routine functions like
  * sorting or searching a generic container. When creating a custom comparison function for your type,
  * the following protocol @b must be adhered to:
- *      a return value < 1 means @p a is less than @p b.
- *      a return value of > 1 means @p a is greater than @p b.
+ *      a return value < 0 means @p a is less than @p b.
+ *      a return value of > 0 means @p a is greater than @p b.
  *      a return value of 0 means @p a is equal to @p b.
  * 
  * As a convenience, the library provides comparison functions for all the C built in types.
