@@ -32,17 +32,9 @@ size_t csc_cvector_capacity(const cvector* v)
     return v->capacity;
 }
 
-static void _csc_free_elem(void* elem, void* context)
-{
-    CSC_UNUSED(context);
-    assert(elem != NULL);
-    free(elem);
-}
-
 void csc_cvector_destroy(cvector* v)
 {
     assert(v != NULL);
-    csc_cvector_foreach(v, _csc_free_elem, NULL);
     free(v);
 }
 

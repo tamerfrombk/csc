@@ -24,12 +24,14 @@
  *      // couldn't create the vector.
  * }
  * 
- * // add some elements into the vector. Note that they must be on the heap and that the vector "owns" the element.
+ * // add some elements into the vector.
  * for (int i = 0; i < 10; i++) {
  *      int* x = malloc(sizeof(*x));
  *      if (x == NULL) {
  *          // couldn't allocate memory.
  *      }
+ *      *x = i;
+ *  
  *      CSCError e = csc_cvector_add(v, x);
  *      if (e != E_NOERR) {
  *          // couldn't add the element.
@@ -55,6 +57,10 @@
  * csc_cvector_foreach(v, print_elem, NULL);
  * 
  * // clean up resources
+ * for (size_t i = 0; i < csc_cvector_size(v); ++i) {
+ *      void* x = csc_cvector_at(v, i);
+ *      free(x);
+ * }
  * csc_cvector_destroy(v);
  * 
  * //
@@ -122,7 +128,8 @@ void csc_cvector_destroy(cvector* v);
 /**
  * @brief adds an element into the vector.
  * 
- * This function adds @p elem into the supplied vector. Note that @p elem @b MUST point to an element allocated on the heap.
+ * This function adds @p elem into the supplied vector. Note that adding the element into the vector does @b not
+ * make the vector own the element. The user is still responsible for cleaning up that memory.
  * 
  * Both @p elem and @p v are expected to be @b non-null. This means that @c NULL elements are @b not allowed.
  * 
