@@ -90,19 +90,6 @@
 typedef struct cvector cvector;
 
 /**
- * @brief callback function for iterating the elements of a @c cvector.
- * 
- * This callback function defines an operation that will be applied to each element of the @c cvector
- * by the @c csc_cvector_foreach function. 
- * 
- * @param elem the element to process
- * @param context user-defined data that can be passed into the function. Can be @c NULL if unused.
- * 
- * @see csc_cvector_foreach
- */
-typedef void (*cvector_foreach)(void* elem, void* context);
-
-/**
  * @brief cvector "constructor" function
  * 
  * This function is used to create a @c cvector. If the function is successful, the function
@@ -234,12 +221,12 @@ size_t csc_cvector_capacity(const cvector* v);
  * <b>Time Complexity:</b> @c O(n)
  * 
  * @param v the vector.
- * @param fn the callback function to apply to each element. See #cvector_foreach.
+ * @param fn the callback function to apply to each element.
  * @param context user-defined data that will be applied to the callback. Can be @c NULL if unused.
  * 
- * @see cvector_foreach
+ * @see csc_foreach
  */
-void csc_cvector_foreach(cvector* v, cvector_foreach fn, void* context);
+void csc_cvector_foreach(cvector* v, csc_foreach fn, void* context);
 
 /**
  * @brief returns the element at the specified index.

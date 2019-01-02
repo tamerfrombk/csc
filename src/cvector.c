@@ -38,7 +38,7 @@ void csc_cvector_destroy(cvector* v)
     free(v);
 }
 
-void csc_cvector_foreach(cvector* v, cvector_foreach fn, void* context)
+void csc_cvector_foreach(cvector* v, csc_foreach fn, void* context)
 {
     assert(v != NULL);
     if (v->data == NULL) {
