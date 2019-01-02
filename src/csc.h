@@ -121,6 +121,17 @@ void csc_swap(void** a, void** b);
 typedef int (*csc_compare)(const void* a, const void* b);
 
 /**
+ * @brief callback function for iterating the elements of a container.
+ * 
+ * This callback function defines an operation that will be applied to each element of a container.
+ * 
+ * @param elem the element to process
+ * @param context user-defined data that can be passed into the function. Can be @c NULL if unused.
+ * 
+ */
+typedef void (*csc_foreach)(void* elem, void* context);
+
+/**
  * @brief convenience macro defining comparison functions for built in types.
  * 
  * This macro defines a comparison function for built-in C types.
