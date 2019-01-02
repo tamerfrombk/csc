@@ -143,11 +143,13 @@ CSCError csc_cvector_add(cvector* v, void* elem);
  * @param elem the element to remove.
  * @param cmp the comparison function to use. See #csc_compare for more details.
  * 
+ * @return If the element is successfully removed, the element is returned. Otherwise, @c NULL.
+ * 
  * @see csc_compare
  * @see csc_cvector_find
  * 
  */ 
-void csc_cvector_rm(cvector* v, const void* elem, csc_compare cmp);
+void* csc_cvector_rm(cvector* v, const void* elem, csc_compare cmp);
 
 /**
  * @brief removes the element at the specified 0-indexed index from the vector.
@@ -161,9 +163,10 @@ void csc_cvector_rm(cvector* v, const void* elem, csc_compare cmp);
  * @param v the vector.
  * @param idx the index.
  * 
- * @return @c CSCError#E_NOERR or @c CSCError#E_OUTOFRANGE if the supplied index is out of range.
+ * @return If the element is successfully removed, the element is returned. Otherwise, @c NULL.
+ * 
  */ 
-CSCError csc_cvector_rm_at(cvector* v, size_t idx);
+void* csc_cvector_rm_at(cvector* v, size_t idx);
 
 /**
  * @brief finds the element in the specified vector.

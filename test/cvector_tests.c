@@ -105,8 +105,9 @@ void TestVectorRmEmpty(CuTest *c)
     cvector* v = csc_cvector_create();
 
     int x = 0;
-    csc_cvector_rm(v, &x, csc_cmp_int);
+    void* ret = csc_cvector_rm(v, &x, csc_cmp_int);
 
+    CuAssertPtrEquals(c, NULL, ret);
     CuAssertIntEquals(c, 0, csc_cvector_size(v));
 
     csc_cvector_destroy(v);
@@ -120,8 +121,9 @@ void TestVectorRmNotEmptyAndExists(CuTest *c)
 
     csc_cvector_add(v, &x);
 
-    csc_cvector_rm(v, &x, csc_cmp_int);
+    void* elem = csc_cvector_rm(v, &x, csc_cmp_int);
 
+    CuAssertPtrEquals(c, &x, elem);
     CuAssertIntEquals(c, 0, csc_cvector_size(v));
     CuAssertPtrEquals(c, NULL, csc_cvector_find(v, &x, csc_cmp_int));
 
@@ -136,8 +138,9 @@ void TestVectorRmNotEmptyAndDoesNotExist(CuTest *c)
     csc_cvector_add(v, &x);
 
     int y = 2;
-    csc_cvector_rm(v, &y, csc_cmp_int);
+    void* ret = csc_cvector_rm(v, &y, csc_cmp_int);
 
+    CuAssertPtrEquals(c, NULL, ret);
     CuAssertIntEquals(c, 1, csc_cvector_size(v));
     CuAssertPtrEquals(c, NULL, csc_cvector_find(v, &y, csc_cmp_int));
 
@@ -148,7 +151,7 @@ void TestVectorRmAtEmpty(CuTest *c)
 {
     cvector* v = csc_cvector_create();
 
-    CuAssertTrue(c, csc_cvector_rm_at(v, 0) == E_OUTOFRANGE);
+    CuAssertPtrEquals(c, NULL, csc_cvector_rm_at(v, 0));
     CuAssertIntEquals(c, 0, csc_cvector_size(v));
 
     csc_cvector_destroy(v);
@@ -161,21 +164,21 @@ void TestVectorRmAtNotEmptyAndExists(CuTest *c)
     int x = 1;
     csc_cvector_add(v, &x);
 
-    CuAssertTrue(c, E_NOERR == csc_cvector_rm_at(v, 0));
+    CuAssertPtrEquals(c, &x, csc_cvector_rm_at(v, 0));
     CuAssertIntEquals(c, 0, csc_cvector_size(v));
     CuAssertPtrEquals(c, NULL, csc_cvector_find(v, &x, csc_cmp_int));
 
     csc_cvector_destroy(v);
 }
 
-void TestVectorRmAtNotEmptyAndDoesNotExist(CuTest *c)
+void TestVectorRmAtNotEmptyAndOutOfRange(CuTest *c)
 {
     cvector* v = csc_cvector_create();
 
     int x = 1;
     csc_cvector_add(v, &x);
 
-    CuAssertTrue(c, E_OUTOFRANGE == csc_cvector_rm_at(v, 1));
+    CuAssertPtrEquals(c, NULL, csc_cvector_rm_at(v, 1));
     CuAssertIntEquals(c, 1, csc_cvector_size(v));
     CuAssertPtrEquals(c, &x, csc_cvector_find(v, &x, csc_cmp_int));
 
