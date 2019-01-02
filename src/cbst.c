@@ -1,3 +1,11 @@
+/**
+ * @file cbst.c
+ * @author Tamer Aly
+ * @date 27 Dec 2018
+ * @brief This file defines the implements the #cbst data structure and interface functions.
+ * 
+ */
+
 #include "cbst.h"
 #include <assert.h>
 
